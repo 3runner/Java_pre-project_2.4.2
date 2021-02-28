@@ -3,4 +3,5 @@
 .lib/
 .srs/test/
 2.3.1_CRUD.iml
-web/
+spring-mvc.iml
+/WebCrud/target/
