@@ -1,43 +1,54 @@
 package web.dao;
 
-import org.hibernate.SessionFactory;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
-import web.model.User;
+import web.entity.User;
 
-import javax.persistence.Query;
+import javax.persistence.EntityManager;
+import javax.persistence.PersistenceContext;
 import java.util.List;
 
 @Repository
 public class UserDaoImpl implements UserDao {
-
-    @Autowired
-    private SessionFactory sessionFactory;
+    @PersistenceContext
+    private EntityManager entityManager;
 
     @Override
     @SuppressWarnings("unchecked")
     public List<User> getAllUsers() {
-        return sessionFactory.getCurrentSession().createQuery("select u from User as u").getResultList();
+        return entityManager
+                .createQuery("select u from User as u")
+                .getResultList();
+    }
+
+    @Override
+    public User getUser(long id) {
+        return (User) entityManager
+                .createQuery("select u from User as u where u.id = :idParam")
+                .setParameter("idParam", id)
+                .getSingleResult();
     }
 
     @Override
     public void addUser(User user) {
-        sessionFactory.getCurrentSession().save(user);
+        entityManager.createNativeQuery("INSERT INTO users (name, surname) VALUES (?, ?)")
+                .setParameter(1, user.getName())
+                .setParameter(2, user.getSurname())
+                .executeUpdate();
     }
 
     @Override
     public void updateUser(long id, String name, String surname) {
-        Query query = sessionFactory.getCurrentSession().createQuery(
-                "update User set name = :nameParam, surname = :surnameParam where id = :idParam");
-        query.setParameter("nameParam", name);
-        query.setParameter("surnameParam", surname);
-        query.setParameter("idParam", id);
-
-        query.executeUpdate();
+        entityManager.createQuery("update User set name = :nameParam, surname = :surnameParam where id = :idParam")
+                .setParameter("nameParam", name)
+                .setParameter("surnameParam", surname)
+                .setParameter("idParam", id)
+                .executeUpdate();
     }
 
     @Override
-    public void deleteUser(User user) {
-        sessionFactory.getCurrentSession().delete(user);
+    public void deleteUser(long id) {
+        entityManager.createQuery("delete from User where id = :idParam")
+                .setParameter("idParam", id)
+                .executeUpdate();
     }
 }

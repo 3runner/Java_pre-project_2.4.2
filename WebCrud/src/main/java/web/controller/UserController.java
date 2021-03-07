@@ -5,7 +5,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
-import web.model.User;
+import web.entity.User;
 import web.service.UserService;
 
 import javax.validation.Valid;
@@ -29,7 +29,7 @@ public class UserController {
 
     @GetMapping("/{id}")
     public String show(@PathVariable("id") int id, Model model) {
-        model.addAttribute("user", userService.getUser(id, userService.getAllUsers()));
+        model.addAttribute("user", userService.getUser(id));
         return "show";
     }
 
@@ -50,7 +50,7 @@ public class UserController {
 
     @GetMapping("/{id}/edit")
     public String edit(Model model, @PathVariable("id") int id) {
-        model.addAttribute("user", userService.getUser(id, userService.getAllUsers()));
+        model.addAttribute("user", userService.getUser(id));
         return "edit";
     }
 
@@ -66,7 +66,7 @@ public class UserController {
 
     @DeleteMapping("/{id}")
     public String delete(@PathVariable("id") int id) {
-        userService.deleteUser(userService.getUser(id, userService.getAllUsers()));
+        userService.deleteUser(id);
         return "redirect:/users";
     }
 }

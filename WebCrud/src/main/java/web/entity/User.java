@@ -1,4 +1,4 @@
-package web.model;
+package web.entity;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotEmpty;
