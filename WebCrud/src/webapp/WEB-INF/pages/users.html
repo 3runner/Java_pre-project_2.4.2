@@ -8,14 +8,29 @@
 <h1>Users page</h1>
 
 <div th:each="user : ${users}">
-    <a th:href="@{/users/{id}(id=${user.getId()})}"
-       th:text="${user.getName() + ' ' + user.getSurname()}">user</a>
+    <a th:href="@{/user/{id}(id=${user.getId()})}"
+       th:text="${user.getName()}">user</a>
+
+    <a th:href="@{/user/{id}/edit(id=${user.getId()})}">Edit</a>
+
+    <a>
+        <form th:method="DELETE" th:action="@{/user/{id}(id=${user.getId()})}">
+            <input type="submit" value="Delete"/>
+        </form>
+    </a>
+
+    <br/>
 </div>
 
-<br/>
 <hr/>
 
-<a href="/users/new">Create new person</a>
+<a href="/user/new">Create new person</a>
+
+<hr/>
+
+<form th:method="POST" th:action="@{/logout}">
+    <input type="submit" value="Logout"/>
+</form>
 
 </body>
 </html>

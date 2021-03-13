@@ -5,21 +5,18 @@
     <title>Show</title>
 </head>
 <body>
-<a th:href="@{/users}">Back</a>
 
-<br/>
-
-<p th:text="${user.getName() + ', ' + user.getSurname()}">VALUE</p>
+<p th:text="${user.getName() + ', ' + user.getPassword()}">VALUE</p>
 
 <p th:text="${'ID: ' + user.getId()}">VALUE</p>
 
-<a th:href="@{/users/{id}/edit(id=${user.getId()})}">Edit</a>
+<p th:text="${'Roles: ' + user.getRoles()}">VALUE</p>
 
-<br/>
+<hr/>
 
-<form th:method="DELETE" th:action="@{/users/{id}(id=${user.getId()})}">
-    <input type="submit" value="Delete"/>
-
+<form th:method="POST" th:action="@{/logout}">
+    <input type="submit" value="Logout"/>
 </form>
+
 </body>
 </html>
