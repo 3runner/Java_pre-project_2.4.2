@@ -44,10 +44,10 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .authorizeRequests()                                                   // делаем страницу регистрации недоступной для авторизированных пользователей
                 .antMatchers("/login").anonymous()                         //страницы аутентификаци доступна всем
                 // защищенные URL
-                .antMatchers("/admin").hasRole("ADMIN")
-                .antMatchers("/user").hasAnyRole("ADMIN", "USER")
-                .antMatchers("/user/new").hasRole("ADMIN")
-                .antMatchers("/user/*/edit").hasRole("ADMIN");
+                .antMatchers("/admin").hasAuthority("Admin")
+                .antMatchers("/user").hasAnyAuthority("Admin", "User")
+                .antMatchers("/user/new").hasAuthority("Admin")
+                .antMatchers("/user/*/edit").hasAuthority("Admin");
 
         http.logout()
                 .permitAll()                                                           // разрешаем делать логаут всем

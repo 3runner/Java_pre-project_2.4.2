@@ -1,6 +1,5 @@
 package web.security;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.authority.AuthorityUtils;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -17,8 +16,11 @@ import java.util.Set;
 @Component
 public class LoginSuccessHandler implements AuthenticationSuccessHandler {
 
-    @Autowired
-    private UserService userService;
+    private final UserService userService;
+
+    public LoginSuccessHandler(UserService userService) {
+        this.userService = userService;
+    }
 
     @Override
     public void onAuthenticationSuccess(HttpServletRequest httpServletRequest,
@@ -33,9 +35,9 @@ public class LoginSuccessHandler implements AuthenticationSuccessHandler {
                         .getUsername())
                 .getId();
 
-        if (roles.contains("ROLE_ADMIN")) {
+        if (roles.contains("Admin")) {
             httpServletResponse.sendRedirect("/admin");
-        } else if (roles.contains("ROLE_USER")) {
+        } else if (roles.contains("User")) {
             httpServletResponse.sendRedirect("/user/" + id);
         }
     }
